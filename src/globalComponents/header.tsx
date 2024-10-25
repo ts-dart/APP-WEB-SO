@@ -11,29 +11,44 @@ import {
   imgPerfilHeader1,
   imgInfoHeader,
   imgLogo
-} from '../data/index'
+} from '../data/index';
 
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
-  const [imgHome, setImgHome] = useState(imgHomeHeader)
+  const navigate = useNavigate();
+
+  const [imgHome, setImgHome] = useState(imgHomeHeader);
   const [imgSearch, setImgSearch] = useState(imgSearchHeader);
   const [imgCreateNewPost, setImgCreateNewPost] = useState(imgCreateNewPoastHeader);
   const [imgSocial, setImgSocial] = useState(imgSocialHeader);
   const [imgPerfil, setImgPerfil] = useState(imgPerfilHeader);
-  
+  const [headerButtonText, setHeaderButtonText] = useState(localStorage.getItem('LoginToken') ? 'Sair' : 'Entrar');
+
+  const headerButtonAction = () => {
+    if (localStorage.getItem('LoginToken')) {
+      localStorage.removeItem('LoginToken');
+      setHeaderButtonText('Entrar'); // Atualiza o texto do botão após sair
+    } else {
+      setHeaderButtonText('Sair'); // Atualiza o texto do botão após entrar
+      navigate('/login'); // Navega para a página de login
+    }
+  };
+
+  useEffect(() => {}, [headerButtonText]);
+
   return (
     <header className="w-full h-20 flex justify-evenly items-center">
       <img className='w-[30px] h-[30px]' src={imgLogo} alt="" />
-      <nav className="flex flex-row gap-8">
+      <nav className="flex flex-row gap-4">
         <img 
           className='w-[27px] h-[27px] cursor-pointer hover:bg-[#111827] hover:bg-opacity-80 hover:rounded-full hover:shadow-[0_0_1px_5px_#111827]' 
           src={imgHome} alt="" 
           onMouseEnter={() => setImgHome(imgHomeHeader1)}
-          onMouseLeave={()=> setImgHome(imgHomeHeader)}
+          onMouseLeave={() => setImgHome(imgHomeHeader)}
         />
-         <img 
+        <img 
           className='w-[27px] h-[27px] cursor-pointer hover:bg-[#111827] hover:bg-opacity-80 hover:rounded-full hover:shadow-[0_0_1px_5px_#111827]' 
           src={imgSearch} alt="" 
           onMouseEnter={() => setImgSearch(imgSearchHeader1)}
@@ -63,11 +78,9 @@ export default function Header() {
           alt="" 
         />
       </nav>
-      <Link to='/login'>
-        <button className='bg-white rounded p-[7px] text-[11px] text-black hover:bg-[#c8cacf]'>
-          {localStorage.getItem('token') == null ? 'Sign in' : 'Sign out'}
-        </button>
-      </Link>
+      <button onClick={headerButtonAction} className='bg-white rounded p-[7px] text-[11px] text-black hover:bg-[#c8cacf]'>
+        {headerButtonText}
+      </button>
     </header>
-  )
+  );
 }
