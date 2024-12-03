@@ -2,7 +2,7 @@ import { useState } from 'react';
 import LoginForm from './components/loginForm'
 import RegisterForm from './components/registerForm';
 
-export default function Login() {
+export default function AuthenticationPage() {
   const [formType, setFormType] = useState(true)
 
   return (

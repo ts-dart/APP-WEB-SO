@@ -1,18 +1,26 @@
-import { useEffect } from 'react'
-import { JwtValidator } from '../../services'
+import { useContext, useEffect } from 'react'
+import { useJwt } from 'react-jwt'
 
 import Feed from "./components/feed"
-import Header from "../../globalComponents/header"
+import AsideNav from "../../components/asideNav"
+import ThemeContext from '../../services/context'
+import { LoggedinUser } from '../../types'
 
-export default function Home() {
+export default function HomePage() {
+  const {setLoggedinUser} = useContext(ThemeContext)
+
+  const token = localStorage.getItem('LoginToken') || ''
+  const { decodedToken, isExpired } = useJwt(token) as { decodedToken: LoggedinUser; isExpired: boolean }
+
   useEffect(() => {
-    const decoded = JwtValidator(localStorage.getItem('LoginToken'))
-    console.log(decoded)
-  }, [])
+    if (decodedToken && isExpired !== null) {
+      setLoggedinUser({ ...decodedToken, expiredLogin: isExpired });
+    }
+  }, [decodedToken, isExpired])
 
   return (
     <>
-      <Header />
+      <AsideNav />
       <Feed />
     </>
   )

@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { makeLoginRequest } from '../service/requestHandler'
-import SidePopup from "../../../globalComponents/sidePopup";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { makeLoginRequest } from '../services'
+import SidePopup from "../../../components/sidePopup"
 
 export default function LoginForm() {
   const navigate = useNavigate()
 
-  const [loginType, setLoginType] = useState('userName'); // Valor inicial correspondente ao primeiro tipo
+  const [loginType, setLoginType] = useState('userName') // Valor inicial correspondente ao primeiro tipo
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
   const [loginButtonStatus, setLoginButtonStatus] = useState(true)
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState<boolean | undefined>(false)
   const [feedbackMessage, setFeedbackMessage] = useState('')
 
   const logIn = () => {

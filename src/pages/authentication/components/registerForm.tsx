@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { makeRegisterRequest } from '../service/requestHandler'
-import SidePopup from '../../../globalComponents/sidePopup'
+import { makeRegisterRequest } from '../services'
+import SidePopup from '../../../components/sidePopup'
 
 export default function RegisterForm() {
   const [userName, setUserName] = useState('')
@@ -9,7 +9,7 @@ export default function RegisterForm() {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [loginButtonStatus, setLoginButtonStatus] = useState(true)
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState<boolean | undefined>(false)
   const [feedbackMessage, setFeedbackMessage] = useState('')
 
   const register = () => {
